@@ -52,7 +52,7 @@ class AuthController extends Controller
     }
 
     public function register(Request $request)
-    {
+    {  
         $validator = Validator::make($request->all(), [
             'name'      => 'required',
             'email'     => 'required|string|email|max:100|unique:users',
@@ -60,7 +60,9 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
+            return response()->json(
+                $validator->errors()
+            , 400);
         }
 
         $user = User::create(array_merge(

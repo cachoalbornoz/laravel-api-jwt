@@ -4,30 +4,22 @@ use Illuminate\Support\Facades\Facade;
 
 return [
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name'            => env('APP_NAME', 'Laravel'),
 
-    'env' => env('APP_ENV', 'production'),
+    'env'             => env('APP_ENV', 'production'),
 
-    'debug' => (bool) env('APP_DEBUG', false),
+    'debug'           => (bool)env('APP_DEBUG', false),
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url'             => env('APP_URL', 'http://localhost'),
+    'asset_url'       => env('ASSET_URL'),
+    'timezone'        => 'America/Argentina/Buenos_Aires',
+    'locale'          => 'es',
+    'fallback_locale' => 'es',
+    'faker_locale'    => 'es_AR',
+    'key'             => env('APP_KEY'),
+    'cipher'          => 'AES-256-CBC',
 
-    'asset_url' => env('ASSET_URL'),
-
-    'timezone' => 'UTC',
-
-    'locale' => 'en',
-
-    'fallback_locale' => 'en',
-
-    'faker_locale' => 'en_US',
-
-    'key' => env('APP_KEY'),
-
-    'cipher' => 'AES-256-CBC',
-
-
-    'maintenance' => [
+    'maintenance'     => [
         'driver' => 'file',
         // 'store'  => 'redis',
     ],
@@ -41,13 +33,11 @@ return [
     | request to your application. Feel free to add your own services to
     | this array to grant expanded functionality to your applications.
     |
-    */
+     */
 
-    'providers' => [
+    'providers'       => [
 
-        /*
-         * Laravel Framework Service Providers...
-         */
+        // Laravel Framework Service Providers...
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
         Illuminate\Bus\BusServiceProvider::class,
@@ -71,13 +61,9 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
-        /*
-         * Package Service Providers...
-         */
+        // Package Service Providers...
 
-        /*
-         * Application Service Providers...
-         */
+        // Application Service Providers...
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
@@ -97,9 +83,9 @@ return [
     | is started. However, feel free to register as many as you wish as
     | the aliases are "lazy" loaded so they don't hinder performance.
     |
-    */
+     */
 
-    'aliases' => Facade::defaultAliases()->merge([
+    'aliases'         => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
