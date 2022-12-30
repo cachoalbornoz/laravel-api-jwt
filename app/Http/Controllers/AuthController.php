@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -33,7 +33,6 @@ class AuthController extends Controller
     public function logout()
     {
         auth()->logout();
-
         return response()->json(['message' => 'Successfully logged out']);
     }
 
@@ -45,6 +44,7 @@ class AuthController extends Controller
     protected function respondWithToken($token)
     {
         return response()->json([
+            'user'         => Auth::user(),
             'access_token' => $token,
             'token_type'   => 'bearer',
             'expires_in'   => auth()->factory()->getTTL() * 60,
@@ -52,27 +52,34 @@ class AuthController extends Controller
     }
 
     public function register(Request $request)
-    {  
+    {
         $validator = Validator::make($request->all(), [
-            'name'      => 'required',
-            'email'     => 'required|string|email|max:100|unique:users',
+            'name'     => 'required',
+            'email'    => 'required|string|email|max:100|unique:users',
             'password' => 'required|string|min:6',
         ]);
 
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()
-            , 400);
+                $validator->errors(),
+                400
+            );
         }
-
+        
         $user = User::create(array_merge(
             $validator->validate(),
             ['password' => bcrypt($request->password)]
         ));
 
+        $token = auth()->attempt(request(['email', 'password']));
+
         return response()->json([
-            'message' => 'Usuario creado',
-            'user'    => $user,
+            'message'      => 'Usuario creado',
+            'user'         => $user,
+            'access_token' => $token,
+            'token_type'   => 'bearer',
+            'expires_in'   => auth()->factory()->getTTL() * 60,
+
         ], 201);
     }
 }
