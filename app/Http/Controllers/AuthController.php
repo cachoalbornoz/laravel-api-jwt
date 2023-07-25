@@ -25,6 +25,16 @@ class AuthController extends Controller
         return $this->respondWithToken($token);
     }
 
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'user'         => Auth::user(),
+            'access_token' => $token,
+            'token_type'   => 'bearer',
+            'expires_in'   => auth()->factory()->getTTL() * 60,
+        ]);
+    }
+
     public function profile()
     {
         return response()->json(auth()->user());
@@ -41,16 +51,6 @@ class AuthController extends Controller
         return $this->respondWithToken(auth()->refresh());
     }
 
-    protected function respondWithToken($token)
-    {
-        return response()->json([
-            'user'         => Auth::user(),
-            'access_token' => $token,
-            'token_type'   => 'bearer',
-            'expires_in'   => auth()->factory()->getTTL() * 60,
-        ]);
-    }
-
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -65,7 +65,7 @@ class AuthController extends Controller
                 400
             );
         }
-        
+
         $user = User::create(array_merge(
             $validator->validate(),
             ['password' => bcrypt($request->password)]
